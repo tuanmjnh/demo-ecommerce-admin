@@ -1,0 +1,34 @@
+/* .n-button--primary-type,.n-button--info-type,.n-button--success-type,
+.n-button--warning-type,.n-button--error-type {
+  color: #fff;
+}
+.n-button--primary-type:hover,.n-button--info-type:hover,.n-button--success-type:hover,
+.n-button--warning-type:hover,.n-button--error-type:hover {
+  color: #fff;
+}
+.n-button--primary-type:focus,.n-button--info-type:focus,.n-button--success-type:focus,
+.n-button--warning-type:focus,.n-button--error-type:focus {
+  color: #fff;
+} */
+/* .n-scrollbar {
+  padding-right: 12px;
+} */
+.n-scrollbar > .n-scrollbar-rail {
+  padding-left: 4px;
+}
+.n-scrollbar > .n-scrollbar-rail.n-scrollbar-rail--horizontal--bottom {
+  bottom: 0px;
+}
+/* .cell-inline .n-data-table-td {
+  display: inline-flex;
+  align-items: center;
+} */
+.inline-flex {
+  display: inline-flex;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

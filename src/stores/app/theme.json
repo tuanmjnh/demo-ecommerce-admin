@@ -1,0 +1,24 @@
+{
+  "common": {
+    "primaryColor": "#1976d2",
+    "primaryColorHover": "#00b4ff",
+    "primaryColorPressed": "#00b5ff",
+    "primaryColorSuppl": "#00b4ff",
+    "infoColor": "#70c0e8",
+    "infoColorHover": "#8acbec",
+    "infoColorPressed": "#66afd3",
+    "infoColorSuppl": "#4098fc",
+    "successColor": "#18a058",
+    "successColorHover": "#36ad6a",
+    "successColorPressed": "#0c7a43",
+    "successColorSuppl": "#36ad6a",
+    "warningColor": "#f0a020",
+    "warningColorHover": "#fcb040",
+    "warningColorPressed": "#c97c10",
+    "warningColorSuppl": "#fcb040",
+    "errorColor": "#d03050",
+    "errorColorHover": "#de576d",
+    "errorColorPressed": "#ab1f3f",
+    "errorColorSuppl": "#de576d"
+  }
+}

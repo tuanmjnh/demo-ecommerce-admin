@@ -1,0 +1,156 @@
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { Tasks } from '@/utils/tasks'
+import { useAppStore } from '@/stores'
+const appStore = useAppStore()
+const formOption = reactive({
+  thread: 2,
+  task: 10,
+  speed: 100,
+  tasks: [] as Array<number>
+})
+// const fullscreenLoading = ref(false)
+const isProcess = ref(0)
+const isPaused = ref(false)
+const ticks = ref(<{ id: any, key: number, value: number, done: boolean }[]>[])
+const taskWorking = new Tasks()
+
+const onTick = async (threadId: any, taskId: number, speed = 1000, callback?) => {
+  return new Promise((resolve) => {
+    if (ticks.value[threadId] && ticks.value[threadId].id > 0) clearInterval(ticks.value[threadId].id)
+    ticks.value.push({
+      id: 0,
+      key: taskId,
+      value: 0,
+      done: false
+    })
+    const tick = ticks.value[ticks.value.length - 1]
+    tick.id = setInterval(() => {
+      if (!taskWorking.isPause()) tick.value += 1
+      if (!taskWorking.isProcessing()) {
+        clearInterval(tick.id)
+      }
+      if (tick.value > 99) {
+        clearInterval(tick.id)
+        if (callback) callback(tick)
+        tick.done = true
+        resolve(tick)
+      }
+    }, speed)
+  })
+
+  // for await (const e of numbers()) {
+  //   await delay(sleep)
+  //   ticks.value[threadId].value += 1
+  // }
+}
+
+const onTaskRun = () => {
+  try {
+    formOption.tasks = []
+    for (let index = 0; index < formOption.task; index++) formOption.tasks.push(index)
+    taskWorking.onStart(formOption.thread, formOption.tasks, 10,
+      (isProcessing, tasks) => { isProcess.value = 1 }, //isProcessing
+      (threadIndex, taskIndex, task, isProcessing, processing, processed) => {
+        onTick(threadIndex, taskIndex, formOption.speed).then((interval) => {
+          taskWorking.onResetThread(threadIndex)
+          taskWorking.onPushProcessed(taskIndex)
+        })
+      }
+    ).then((x) => {
+      isProcess.value = 2
+      isPaused.value = !x
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+const onTaskPause = () => {
+  try {
+    taskWorking.onPause((isPause) => {
+      isPaused.value = isPause
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+const onTaskStop = () => {
+  try {
+    taskWorking.onStop((isProcessing, isPause) => {
+      isProcess.value = 0//isProcessing
+      isPaused.value = isPause
+      ticks.value = []
+      formOption.tasks = []
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+const onClearTicks = () => {
+  try {
+    ticks.value = []
+  } catch (e) {
+    console.log(e)
+  }
+}
+</script>
+<template>
+  <n-space vertical>
+    <n-card title="Tasks">
+      <template #header-extra>
+        <n-space>
+          <!-- {{ taskWorking.IsProcessing }} -->
+          <n-button v-if="isProcess > 1 && ticks.length" type="tertiary" :loading="isProcess < 2" @click="onClearTicks">
+            Clear List
+          </n-button>
+          <n-button v-if="isProcess != 1" type="primary" :loading="isProcess == 1" @click="onTaskRun">
+            Start Task
+          </n-button>
+          <n-button v-if="isProcess == 1" type="warning" :loading="isProcess > 0" @click="onTaskRun">
+            {{ isPaused ? 'Continue Task' : 'Pause Task' }}
+          </n-button>
+          <n-button v-if="isProcess == 1" type="error" :loading="isProcess != 1" @click="onTaskStop">
+            Stop Task
+          </n-button>
+        </n-space>
+      </template>
+      <n-form label-placement="left" label-width="auto" require-mark-placement="right-hanging" :model="formOption">
+        <n-grid :span="24" :x-gap="24">
+          <n-form-item-gi :span="12" label="Task number" path="task">
+            <n-input-number v-model:value="formOption.task" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="Speed" path="speed">
+            <n-input-number v-model:value="formOption.speed" />
+          </n-form-item-gi>
+        </n-grid>
+        <n-form-item label="Thread" path="thread">
+          <n-input-group>
+            <n-select v-model:value="formOption.thread" placeholder="Thread" :options="appStore.threads" />
+          </n-input-group>
+        </n-form-item>
+      </n-form>
+    </n-card>
+    <n-list v-if="isProcess > 0" bordered>
+      <template #header>
+        List tasks
+      </template>
+      <n-scrollbar style="max-height: calc(100vh - 445px)" trigger="none">
+        <n-list-item v-for="(e, i) in ticks" :key="i">
+          <template #prefix>
+            {{ i + 1 }}
+          </template>
+          <template #suffix>
+            <n-button :loading="!e.done">
+              <template #icon>
+                <nova-icon :color="appStore.colors?.primaryColor" icon="icon-park-outline:done-all" />
+              </template>
+            </n-button>
+          </template>
+          <n-thing :title="`Thread ${i + 1} - Task: ${e.key + 1}`" :title-extra="`Percen: ${e.value}%`">
+          </n-thing>
+        </n-list-item>
+      </n-scrollbar>
+    </n-list>
+  </n-space>
+</template>
+<style scoped></style>
