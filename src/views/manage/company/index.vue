@@ -108,34 +108,43 @@ onMounted(onLoad)
                         :placeholder="$tm(['common.pleaseInput', 'components.company.name'])" />
                     </n-form-item>
                     <n-form-item :label="$t('components.company.shortName')">
-                      <n-input v-model:value="modelForm.shortName" placeholder="Tên rút gọn" />
+                      <n-input v-model:value="modelForm.shortName" :placeholder="$t('components.company.shortName')" />
+                    </n-form-item>
+                    <n-form-item label=" Slogan">
+                      <n-input v-model:value="modelForm.slogan" placeholder="Slogan" />
                     </n-form-item>
                   </div>
                 </div>
 
                 <n-grid :cols="2" :x-gap="20" :y-gap="8">
                   <n-form-item-gi :label="$t('common.phoneNumber')">
-                    <n-input v-model:value="modelForm.phone" placeholder="Điện thoại chính" />
+                    <n-input v-model:value="modelForm.phone" :placeholder="$t('common.phoneNumber')" />
                   </n-form-item-gi>
 
                   <n-form-item-gi :label="$t('common.Hotline', 'Hotline')">
                     <n-input v-model:value="modelForm.hotline" placeholder="Hotline" />
                   </n-form-item-gi>
 
-                  <n-form-item-gi label="Email">
-                    <n-input v-model:value="modelForm.email" placeholder="info@example.com" />
+                  <n-form-item-gi :label="$t('common.email')">
+                    <n-input v-model:value="modelForm.email" :placeholder="$t('common.email')" />
                   </n-form-item-gi>
 
                   <n-form-item-gi :label="$t('components.company.taxCode')">
-                    <n-input v-model:value="modelForm.taxCode" placeholder="Mã số thuế" />
+                    <n-input v-model:value="modelForm.taxCode" :placeholder="$t('components.company.taxCode')" />
                   </n-form-item-gi>
 
                   <n-form-item-gi :label="$t('components.company.openingHours')">
                     <n-input v-model:value="modelForm.openingHours" placeholder="VD: Mon-Fri 8:00 - 17:00" />
                   </n-form-item-gi>
 
+                  <n-form-item-gi :span="2" :label="$t('common.desc')">
+                    <n-input v-model:value="modelForm.desc" type="textarea" :placeholder="$t('common.desc')"
+                      :autosize="{ minRows: 2, maxRows: 4 }" />
+                  </n-form-item-gi>
+
                   <n-form-item-gi :span="2" :label="$t('common.address')">
-                    <n-input v-model:value="modelForm.address" type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" />
+                    <n-input v-model:value="modelForm.address" type="textarea" :placeholder="$t('common.address')"
+                      :autosize="{ minRows: 2, maxRows: 4 }" />
                   </n-form-item-gi>
 
                   <n-form-item-gi :label="$t('common.socialNetwork')">

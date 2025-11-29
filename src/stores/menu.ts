@@ -8,14 +8,21 @@ const API_PATH = '/menu'
 const defaultMenu: Models.IMenu = {
   _id: null,
   title: 'Default',
+  desc: '',
   icon: 'icon-park-outline:application-menu',
   pid: null,
+  level: 1,
   type: 'PAGE',
+  locations: ['HEADER_MAIN'],
   refId: null, // categoryId or contentId
   url: '', // if it is an external link
+  target: '_self',
   sort: 1,
   flag: 1,
-  created: { at: Date.now(), by: '', ip: '' }
+  history: null,
+  // created: { at: Date.now(), by: '', ip: '' }
+  createdAt: null,
+  updatedAt: null,
 }
 
 // Default model for item creation/reset
@@ -24,12 +31,18 @@ const defaultModel: Models.IMenu = {
   title: '',
   icon: 'icon-park-outline:application-menu',
   pid: null,
+  level: 1,
   type: 'PAGE',
+  locations: ['HEADER_MAIN'],
   refId: null, // categoryId or contentId
   url: '', // if it is an external link
+  target: '_self',
   sort: 1,
   flag: 1,
-  created: { at: Date.now(), by: '', ip: '' }
+  history: null,
+  // created: { at: Date.now(), by: '', ip: '' }
+  createdAt: null,
+  updatedAt: null,
 }
 
 export const useMenuStore = defineStore('menuStore', () => {

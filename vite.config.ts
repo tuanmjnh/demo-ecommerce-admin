@@ -1,8 +1,8 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import { createVitePlugins } from './vite-plugins'
-import { createViteProxy } from './src/configs/proxy'
-import { serviceConfig } from './src/configs/service.config'
+// import { createViteProxy } from './src/configs/proxy'
+// import { serviceConfig } from './src/configs/service.config'
 import type { ServiceEnvType } from './src/types/env'
 import PACKAGE from './package.json'
 
@@ -10,7 +10,7 @@ import PACKAGE from './package.json'
 export default defineConfig(({ mode }) => {
   // Load .env file based on `mode` in current working directory
   const env = loadEnv(mode, __dirname, '') as ImportMetaEnv
-  const envConfig = serviceConfig[mode as ServiceEnvType]
+  // const envConfig = serviceConfig[mode as ServiceEnvType]
   return {
     base: env.VITE_BASE_URL,
     plugins: createVitePlugins(env),
@@ -29,11 +29,10 @@ export default defineConfig(({ mode }) => {
         // "@views": fileURLToPath(new URL('./src/views', import.meta.url))
       },
     },
-    server: {
-      host: '0.0.0.0',
-      proxy:
-        env.VITE_HTTP_PROXY === 'Y' ? createViteProxy(envConfig) : undefined,
-    },
+    // server: {
+    //   host: '0.0.0.0',
+    //   proxy:  env.VITE_HTTP_PROXY === 'Y' ? createViteProxy(envConfig) : undefined,
+    // },
     build: {
       target: 'esnext',
       reportCompressedSize: false, // Enable/disable gzip compressed size reporting

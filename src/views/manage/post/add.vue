@@ -28,7 +28,7 @@ const updateSlug = () => {
 const onSubmit = () => {
   formRef.value.validate((err: any) => {
     if (err) return
-    modelForm.value.key = groupType
+    // modelForm.value.key = groupType
     modelForm.value.relatedLinks = relatedLinks.value ? relatedLinks.value?.split('\n') : null
     modelForm.value.meta = modelForm.value.meta?.filter(x => x.key) || null
     if (!modelForm.value.slug)
@@ -230,6 +230,14 @@ const targetUrl = computed({
             {{ mode === 'add' ? $t('common.publish') : $t('common.update') }}
           </n-button>
         </template>
+        <n-form-item :label="$t('common.type')">
+          <n-select v-model:value="modelForm.key" :options="[
+            { label: $t('common.post'), value: 'post' },
+            { label: $t('common.news'), value: 'news' },
+          ]" filterable :placeholder="$tm(['common.pleaseSelect', 'common.type'])">
+            <template #empty>{{ $t('common.noData') }}</template>
+          </n-select>
+        </n-form-item>
         <n-form-item :label="$t('common.format')">
           <n-select v-model:value="modelForm.format" :options="[
             { label: $t('common.standard'), value: 'standard' },

@@ -113,7 +113,9 @@ export const useGroupStore = defineStore('groupStore', () => {
       page: args.page,
       limit: args.limit
     }
-    const { items } = filterItems(all.value, query)
+
+    const { items, pages } = filterItems(all.value, query)
+    args.pages = pages
     return items
   }
 

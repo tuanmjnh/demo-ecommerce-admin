@@ -62,6 +62,13 @@ const typeItemsSelected = ref()
 const itemSelected = ref(null)
 const typeItems = ref([])
 const typeItemsAll = ref([])
+const locations = ref([
+  { label: $t('components.options.position.POSITION_TOP'), value: 'HEADER_MAIN' },
+  // { label: 'Header Top', value: 'HEADER_TOP' },
+  { label: $t('components.options.position.POSITION_BOTTOM'), value: 'FOOTER_1' },
+  // { label: 'Footer 2', value: 'FOOTER_2' },
+  // { label: 'Mobile', value: 'MOBILE' }
+])
 const loadTypeItems = async (type: Common.MenuType) => {
   typeItemsSelected.value = []
   typeItems.value = []
@@ -130,6 +137,7 @@ function onSelect(keys) {
   selected.value = JSON.parse(JSON.stringify(menuStore.getFindById(keys[0])))
   previewUrl.value = menuStore.resolveUrl(selected.value)
   modelForm.value.type = selected.value.type
+  // modelForm.value.url = selected.value.url
   loadTypeItemsSelect()
 }
 
@@ -204,7 +212,7 @@ async function saveEdit() {
   formRef.value.validate(async (err: any) => {
     if (err) return
     selected.value.type = modelForm.value.type
-    selected.value.url = modelForm.value.url
+    // selected.value.url = modelForm.value.url
     const res = await menuStore.update(selected.value)
     if (res.status) {
       previewUrl.value = menuStore.resolveUrl(selected.value)
@@ -325,12 +333,20 @@ function commitBulkReorder() {
 
 watch(() => modelForm.value.type, (n) => {
   query.value.page = 1
+  query.value.pages = 0
   loadTypeItems(n)
 }, { deep: true })
 /* ------------------------------------
  * Resolve preview URL real-time
  * ------------------------------------ */
-watch(() => modelForm.value, () => { previewUrlCreate.value = menuStore.resolveUrl(modelForm.value) }, { deep: true })
+watch(() => modelForm.value, () => {
+  previewUrlCreate.value = menuStore.resolveUrl(modelForm.value)
+  modelForm.value.url = viToSlug(modelForm.value.title)
+}, { deep: true })
+
+watch(() => selected.value?.title, (n) => {
+  if (n) selected.value.url = viToSlug(n)
+}, { deep: true })
 
 watch(() => selected.value, () => { if (selected.value) { previewUrl.value = menuStore.resolveUrl(selected.value) } }, { deep: true })
 
@@ -497,6 +513,11 @@ onMounted(() => {
               <help-info class="ml-2" :message="$t('components.groups.dependentHelp')" />
             </n-form-item>
 
+            <n-form-item :label="$t('components.options.position.title')">
+              <n-select v-model:value="modelForm.locations" :options="locations" multiple
+                :placeholder="$tm(['common.pleaseSelect', 'components.options.position.title'])" />
+            </n-form-item>
+
             <n-form-item :label="$t('common.preview')">
               <n-input :value="previewUrlCreate" readonly :placeholder="$t('common.preview')" />
               <n-button class="ml-2" text-color="#fff" :loading="loadingStore.isLoading"
@@ -526,6 +547,11 @@ onMounted(() => {
                 children-field="children" :placeholder="$tm(['common.pleaseSelect', 'components.groups.dependent'])"
                 :default-value="selected.pid" :default-expanded-keys="[selected.pid]" clearable />
               <help-info class="ml-2" :message="$t('components.groups.dependentHelp')" />
+            </n-form-item>
+
+            <n-form-item :label="$t('components.options.position.title')">
+              <n-select v-model:value="selected.locations" :options="locations" multiple
+                :placeholder="$tm(['common.pleaseSelect', 'components.options.position.title'])" />
             </n-form-item>
 
             <n-form-item :label="$t('common.preview')">

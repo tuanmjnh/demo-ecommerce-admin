@@ -11,10 +11,10 @@ const route = useRoute()
 const groupType = route.meta.group || 'post'
 const query = ref({
   text: '',
-  key: groupType,
+  key: ['post', 'news'],
   groups: [],
   sort: '-createdAt',
-  sortBy: 'created.at',
+  sortBy: 'createdAt',
   sortType: -1, //1 ASC, -1 DESC
   flag: 1,
   page: 1,

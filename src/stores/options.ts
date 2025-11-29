@@ -1,6 +1,7 @@
 import { httpAxiosLoading } from '@/services'
 import { addItems, updateItems, removeItems, updatePropsByCondition, filterItems } from 'tm-libs/array'
 import { getRequestItems, getResponseItems } from '@/utils/helper.store'
+import { pushIfNotExist } from 'tm-libs/array'
 
 const API_PATH = '/options'
 
@@ -185,7 +186,8 @@ export const useOptionsStore = defineStore('optionsStore', () => {
     try {
       const items = args.filter(Boolean).map(x => ({ ...defaultModel, ...{ key: 'meta', code: x, value: x, title: x } }))
       const rs = await httpAxiosLoading.post<Common.IResponseItem>(`${API_PATH}/meta`, items)
-      all.value = addItems(all.value, items)
+      // all.value = addItems(all.value, items)
+      pushIfNotExist(all.value, items, 'value')
       metaKeys.value = all.value.filter(x => x.key === 'meta').map(x => { return { label: x.title, value: x.value } })
       return rs
     } catch (e) { throw e }
