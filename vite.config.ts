@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       historyApiFallback: true
-    }
+    },
     optimizeDeps: {
       include: ['echarts', 'md-editor-v3', 'quill'],
     },
