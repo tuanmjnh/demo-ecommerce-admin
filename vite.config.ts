@@ -37,6 +37,9 @@ export default defineConfig(({ mode }) => {
       target: 'esnext',
       reportCompressedSize: false, // Enable/disable gzip compressed size reporting
     },
+    server: {
+      historyApiFallback: true
+    }
     optimizeDeps: {
       include: ['echarts', 'md-editor-v3', 'quill'],
     },
