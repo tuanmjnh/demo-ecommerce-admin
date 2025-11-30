@@ -21,7 +21,6 @@ export function setupRouterGuard(router: Router) {
 
     // Determine whether there is a TOKEN and log in for authentication
     // const authStore = local.get('authStore')
-    // console.log(isLogin)
     if (!authStore.isAuthenticated) {
       if (to.name === 'login') next()
 
@@ -65,7 +64,10 @@ export function setupRouterGuard(router: Router) {
     }
 
     // Do not allow access to the login page after already being logged in.
-    if (to.name === 'login') return next({ path: '/' })
+    if (to.name === 'login') {
+      return next({ path: '/' })
+      // return false
+    }
     next()
     return true
   })

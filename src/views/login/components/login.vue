@@ -49,7 +49,6 @@ const onSubmit = async () => {
       else window.$message.error($t(`message.error.serverError`))
     }
     emit('onLogin', result.status)
-    // console.log('login result', result)
   })
 }
 </script>

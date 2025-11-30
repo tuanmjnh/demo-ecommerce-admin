@@ -68,6 +68,7 @@ export class HttpAxios {
     switch (status) {
       //   case 400: message = $t('http.400', 'Request error'); break
       case 401:
+        if (error.config?.url?.includes('/login')) break
         message = $t('http.401', 'Unauthorized, please log in')
         localStorageNormal.remove('authStore.accessToken')
         location.reload()
@@ -78,12 +79,12 @@ export class HttpAxios {
       //   case 500: message = $t('http.500', 'Internal Server Error'); break
       //   default: message = $t('http.default', 'Network connection failure')
     }
-    const data = error.response?.data as any
+    // const data = error.response?.data as any
     // console.log(data.message)
-    if (status !== 409) {
-      if (data?.message) window.$message.error($t(`message.error.${data?.message || 'error'}`))
-      else window.$message.error(error.response?.statusText || $t(`message.error.error`))
-    }
+    // if (status !== 409) {
+    //   if (data?.message) window.$message.error($t(`message.error.${data?.statusMessage || 'error'}`))
+    //   else window.$message.error(error.response?.statusText || $t(`message.error.error`))
+    // }
   }
 
   /** Common request */

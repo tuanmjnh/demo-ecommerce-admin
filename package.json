@@ -41,6 +41,7 @@
     "dev:test": "vite --mode test",
     "dev:prod": "vite --mode prod",
     "build": "vite build --mode prod && copy vercel.json dist\\vercel.json",
+    "build:docker": "vite build --mode prod",
     "build:dev": "vite build --mode dev",
     "build:test": "vite build --mode test",
     "preview": "vite preview --port 9981",
@@ -49,13 +50,16 @@
     "lint:check": "npx @eslint/config-inspector",
     "sizecheck": "npx vite-bundle-visualizer",
     "deploy:vercel": "npx vercel dist --prod",
-    "deploy:vercel-exist": "npx vercel dist --prod --name bag-post-admin"
+    "deploy:vercel-exist": "npx vercel dist --prod --name bag-post-admin",
+    "docker:build": "docker build -t tuanmjnhdeveloper/bag-post-admin:v1 .",
+    "docker:run": "docker run -d -p 8000:80 tuanmjnhdeveloper/bag-post-admin:v1",
+    "docker:push": "docker push tuanmjnhdeveloper/bag-post-admin:v1"
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^5.0.1",
     "@tinymce/tinymce-vue": "^6.3.0",
     "@vueuse/core": "^13.1.0",
-    "alova": "^3.2.10",
+    "alova": "^3.4.0",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.5.1",

@@ -68,7 +68,7 @@ export const useAuthStore = defineStore('authStore', () => {
 
       return res
     } catch (error) {
-      return { status: false, message: 'loginFailed' } as Common.IResponseAuth
+      return { statusMessage: 'serverError', status: false, ...error?.data } as Common.IResponseAuth
     }
   }
 
@@ -103,7 +103,6 @@ export const useAuthStore = defineStore('authStore', () => {
       if (!accessToken.value) return false
       const res = await httpAxiosLoading.post<Common.IResponseItem>(`${API_PATH}/verify`, { accessToken: accessToken.value })
       if (res.status) return true
-
       // Token expired → try refreshing
       return await verifyRefresh()
     } catch {
